@@ -6,10 +6,11 @@ class SearchesController < ApplicationController
   end
 
   def create
-    @search = Search.find_or_create_by_query(params[:search])
-    unless @search.users.include? current_user
-      @search.users << current_user
-    end
+    @search = current_user.searches.find_or_create_by_query(params[:search])
+    #unless @search.users.include? current_user
+    #  @search.users << current_user
+    #end
+    @google_results = @search.google_search
     render :results
   end
 
