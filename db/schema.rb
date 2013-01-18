@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(:version => 20130118203513) do
   end
 
   create_table "twitter_search_results", :force => true do |t|
+    t.integer  "tweet_id"
     t.string   "username"
-    t.string   "link"
-    t.string   "tweet"
+    t.string   "text"
     t.integer  "search_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

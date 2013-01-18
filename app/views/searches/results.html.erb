@@ -1,5 +1,15 @@
 <h1>Search Both Twitter & Google</h1>
 <%= render 'form' %>
 <ul>
-
+  <% @search_results.each do |result| %>
+      <% if result.search_provider == "Twitter" %>
+        <li class="result-twitter">
+          <span class="text"><%= result.text %></span>
+        </li>
+      <% elsif result.search_provider == "Google" %>
+        <li class="result-google">
+          <span class="title"><a href="<%= result.link %>"><%= result.title %></</span>
+        </li>
+      <% end %>
+  <% end %>
 </ul>

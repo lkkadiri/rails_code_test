@@ -9,7 +9,7 @@ class Search < ActiveRecord::Base
   has_many :users, through: :user_searches
 
   def google_search
-    if self.updated_at < 5.minutes.ago || self.google_search_results.empty?
+    if self.updated_at <= 5.minutes.ago || self.google_search_results.empty?
       touch
       self.google_search_results.destroy_all
 
@@ -28,6 +28,23 @@ class Search < ActiveRecord::Base
       end
     else
       self.google_search_results
+    end
+  end
+
+  def twitter_search
+    if self.updated_at <= 30.minutes.ago || self.twitter_search_results.empty?
+      touch
+      self.twitter_search_results.destroy_all
+
+      uri= URI.parse("http://search.twitter.com/search.json?rpp=10&q=#{self.query}")
+      response= Net::HTTP.get(uri)
+      results = JSON.parse(response)['results']
+
+      results.map do |result|
+        self.twitter_search_results.create tweet_id: result['id'], username: result['from_user'], text: result['text']
+      end
+    else
+      self.twitter_search_results
     end
   end
 

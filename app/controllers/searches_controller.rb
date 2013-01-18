@@ -7,10 +7,12 @@ class SearchesController < ApplicationController
 
   def create
     @search = current_user.searches.find_or_create_by_query(params[:search])
-    #unless @search.users.include? current_user
-    #  @search.users << current_user
-    #end
     @google_results = @search.google_search
+    @twitter_results = @search.twitter_search
+    @search_results = @google_results + @twitter_results
+    # Interleave the two sets of results together
+    #@google_results.each_with_index { |x,i| @search_results << x << @twitter_results[i]}
+    #binding.pry
     render :results
   end
 
