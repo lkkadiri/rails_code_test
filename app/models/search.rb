@@ -13,13 +13,21 @@ class Search < ActiveRecord::Base
       touch
       self.google_search_results.destroy_all
 
-      uri_page1 = URI.parse("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=5&q=#{self.query}")
-      response_page1 = Net::HTTP.get(uri_page1)
-      results_page1 = JSON.parse(response_page1)['responseData']['results']
+      begin
+        uri_page1 = URI.parse("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=5&q=#{self.query}")
+        response_page1 = Net::HTTP.get(uri_page1)
+        results_page1 = JSON.parse(response_page1)['responseData']['results']
+      rescue => e
+        results_page1 = []
+      end
 
-      uri_page2 = URI.parse("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=5&rsz=5&q=#{self.query}")
-      response_page2 = Net::HTTP.get(uri_page2)
-      results_page2 = JSON.parse(response_page2)['responseData']['results']
+      begin
+        uri_page2 = URI.parse("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=5&rsz=5&q=#{self.query}")
+        response_page2 = Net::HTTP.get(uri_page2)
+        results_page2 = JSON.parse(response_page2)['responseData']['results']
+      rescue => e
+        results_page2 = []
+      end
 
       results = results_page1 + results_page2
 
