@@ -1,0 +1,20 @@
+<h1>Search Results</h1>
+
+<%if @results_goog %>
+<h2>Google Results</h2>
+
+<% @results_goog["responseData"]["results"].each do |goog| %>
+	<p>Title :<%= goog["titleNoFormatting"] %></p>
+	<p>URL: <%= goog["url"] %><br/><br/></p>
+<% end%>
+<% end%>
+
+<%if @results_twit%>
+<h2>Twitter Results</h2>
+
+<% @results_twit["results"].each do |result| %>
+	<p>Title :<%= result["from_user"] %></p>
+	<p>Text: <%= result["text"] %></p>
+	<p>URL: <%= result["source"] %><br/><br/></p>
+<% end%>
+<%end%>
