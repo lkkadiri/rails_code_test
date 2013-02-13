@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  caches_page :index
+  caches_action :index
   def index
     # @results = Google::search("leela")
     cache = ActiveSupport::Cache::MemoryStore.new
